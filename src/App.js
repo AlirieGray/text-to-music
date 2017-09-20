@@ -11,13 +11,22 @@ const Box = (props) => {
 
 const TextIn = (props) => {
   return(
-    <div className="textIn">
-      <form onSubmit={ (e) => {
-          props.handleSubmit(e.target.value)
+    <div className="TextIn">
+      <form onSubmit={ (event) => {
+          event.preventDefault();
+          props.handleSubmit(document.getElementById("textIn").value);
         }}>
-        <input type="text" placeholder="Enter some text"/>
+        <input id="textIn" type="text" placeholder="Enter some text"/>
         <input type="submit" value="Submit" />
       </form>
+    </div>
+  );
+}
+
+const ShowText = (props) => {
+  return(
+    <div className="ShowText">
+      <p>{props.showText}</p>
     </div>
   );
 }
@@ -30,8 +39,10 @@ class App extends Component {
     }
   }
 
-  enterText(theText) {
-    console.log(theText);
+  enterText(txt) {
+    this.setState({
+      text: txt
+    });
   }
 
   render() {
@@ -41,6 +52,7 @@ class App extends Component {
         <TextIn handleSubmit={(text) => {
           this.enterText(text);
         }}/>
+        <ShowText showText={this.state.text} />
       </div>
     );
   }
