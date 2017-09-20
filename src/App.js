@@ -12,12 +12,10 @@ const Box = (props) => {
 const TextIn = (props) => {
   return(
     <div className="textIn">
-      <form onSubmit={ () => {
-          props.handleSubmit()
+      <form onSubmit={ (e) => {
+          props.handleSubmit(e.target.value)
         }}>
-        <label> Enter some text:
-          <input type="text" />
-        </label>
+        <input type="text" placeholder="Enter some text"/>
         <input type="submit" value="Submit" />
       </form>
     </div>
@@ -32,16 +30,16 @@ class App extends Component {
     }
   }
 
-  enterText() {
-    console.log("entered text!");
+  enterText(theText) {
+    console.log(theText);
   }
 
   render() {
     return (
       <div>
         <Box text="Header"/>
-        <TextIn handleSubmit={() => {
-          this.enterText();
+        <TextIn handleSubmit={(text) => {
+          this.enterText(text);
         }}/>
       </div>
     );
