@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
 import './Style.css';
-var unirest = require('unirest');
 
 const Box = (props) => {
   return(
@@ -52,20 +51,24 @@ class App extends Component {
   }
 
   getSentiment(text) {
-    unirest.post("https://community-sentiment.p.mashape.com/text/")
-    .header("X-Mashape-Key", "XmKB0iIDuwmshZEUmujdaIZklsogp134KaujsnvtdYu8vjdmZl")
-    .header("X-Mashape-Host", "community-sentiment.p.mashape.com")
-    .header("Content-Type", "application/x-www-form-urlencoded")
-    .send("txt=" + text)
-    .send("")
-    .end(function (result) {
-      /*
-      this.setState({
-        mood:result.body
-      });
-      */
-      console.log(result.status, result.headers, result.body);
+    var url = "https://community-sentiment.p.mashape.com/text/";
+    fetch(url, {
+      method: 'post',
+      headers: {
+        "X-Mashape-Key": "XmKB0iIDuwmshZEUmujdaIZklsogp134KaujsnvtdYu8vjdmZl",
+        "X-Mashape-Host": "community-sentiment.p.mashape.com",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: JSON.stringify({
+        txt: text,
+      })
+    }).then(function(res) {
+      console.log(res);
+      return res.json();
+    }).then(function(json) {
+      console.log(json);
     });
+      //console.log(result.status, result.headers, result.body);
   }
 
   render() {
