@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import 'whatwg-fetch';
 import './Style.css';
+var unirest = require('unirest');
 
 const Box = (props) => {
   return(
@@ -11,13 +13,15 @@ const Box = (props) => {
 
 const TextIn = (props) => {
   return(
-    <div className="TextIn">
+    <div>
       <form onSubmit={ (event) => {
           event.preventDefault();
           props.handleSubmit(document.getElementById("textIn").value);
         }}>
-        <input id="textIn" type="text" placeholder="Enter some text"/>
-        <input type="submit" value="Submit" />
+        <p>
+          <input className="TextInput" id="textIn" type="text" placeholder="Enter some text..."/>
+        </p>
+        <input className="SubmitButton" type="submit" value="Submit" />
       </form>
     </div>
   );
@@ -35,7 +39,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ""
+      text: "",
+      mood: ""
     }
   }
 
@@ -43,16 +48,35 @@ class App extends Component {
     this.setState({
       text: txt
     });
+    this.getSentiment(txt);
+  }
+
+  getSentiment(text) {
+    unirest.post("https://community-sentiment.p.mashape.com/text/")
+    .header("X-Mashape-Key", "XmKB0iIDuwmshZEUmujdaIZklsogp134KaujsnvtdYu8vjdmZl")
+    .header("X-Mashape-Host", "community-sentiment.p.mashape.com")
+    .header("Content-Type", "application/x-www-form-urlencoded")
+    .send("txt=" + text)
+    .send("")
+    .end(function (result) {
+      /*
+      this.setState({
+        mood:result.body
+      });
+      */
+      console.log(result.status, result.headers, result.body);
+    });
   }
 
   render() {
     return (
-      <div>
-        <Box text="Header"/>
-        <TextIn handleSubmit={(text) => {
+      <div className="Container">
+        <Box text="Text to Music"/>
+        <TextIn className="TextInput" handleSubmit={(text) => {
           this.enterText(text);
         }}/>
         <ShowText showText={this.state.text} />
+        <ShowText showText={this.state.mood} />
       </div>
     );
   }
