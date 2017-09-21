@@ -48,7 +48,9 @@ class App extends Component {
     this.setState({
       text: txt
     });
-    this.getSentiment(txt);
+    this.getSentiment(txt).bind(this);
+    fetch("https://community-sentiment.p.mashape.com/text/")
+      .then()
   }
 
   getSentiment(text) {
