@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "express": "^4.15.4",
+    "querystring": "^0.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.13",
+    "request": "^2.82.0",
     "unirest": "^0.5.1",
     "whatwg-fetch": "^2.0.3"
   },
