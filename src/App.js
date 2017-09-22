@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
 import './Style.css';
+var unirest = require('unirest');
 
 const Box = (props) => {
   return(
@@ -51,24 +52,24 @@ class App extends Component {
   }
 
   getSentiment(text) {
-    var url = "https://community-sentiment.p.mashape.com/text/";
-    fetch(url, {
-      method: 'post',
-      headers: {
-        "X-Mashape-Key": "XmKB0iIDuwmshZEUmujdaIZklsogp134KaujsnvtdYu8vjdmZl",
-        "X-Mashape-Host": "community-sentiment.p.mashape.com",
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: JSON.stringify({
-        txt: text,
+    return new Promise((resolve, reject) => {
+      unirest.post("https://community-sentiment.p.mashape.com/text/")
+      .header("X-Mashape-Key", "XmKB0iIDuwmshZEUmujdaIZklsogp134KaujsnvtdYu8vjdmZl")
+      .header("X-Mashape-Host", "community-sentiment.p.mashape.com")
+      .header("Content-Type", "application/x-www-form-urlencoded")
+      .send("txt=" + text)
+      .send("")
+      .end(function (result) {
+        if(result) {
+          resolve(result);
+        }
       })
-    }).then(function(res) {
-      console.log(res);
-      return res.json();
-    }).then(function(json) {
-      console.log(json);
+    }).then((res) => {
+      console.log(res.body.result.sentiment);
+      this.setState({
+        mood: res.body.result.sentiment
+      });
     });
-      //console.log(result.status, result.headers, result.body);
   }
 
   render() {
@@ -78,7 +79,6 @@ class App extends Component {
         <TextIn className="TextInput" handleSubmit={(text) => {
           this.enterText(text);
         }}/>
-        <ShowText showText={this.state.text} />
         <ShowText showText={this.state.mood} />
       </div>
     );
