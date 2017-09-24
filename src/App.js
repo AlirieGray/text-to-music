@@ -92,8 +92,7 @@ class App extends Component {
       });
     }).then((res) => {
       this.getSong(res);
-    })
-
+    });
   }
 
   getSong(id) {
@@ -109,8 +108,8 @@ class App extends Component {
           });
         }).then((res) => {
           console.log("look up song url now");
-          console.log(res.preview_url);
-        })
+          window.location = res.preview_url;
+        });
       }
 
   render() {
