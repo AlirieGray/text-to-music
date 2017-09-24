@@ -78,17 +78,40 @@ class App extends Component {
   }
 
   searchForSong(searchTerm) {
-    rapid.call('SpotifyPublicAPI', 'searchTracks', {
-    	'accessToken': 'cc686d629de4459bb062466f86c049f9',
-    	'query': searchTerm
-    }).on('success', function (payload) {
-    	 console.log(payload);
-    }).on('error', function (payload) {
-    	 console.error("Error occurred in search for song function");
-       console.log(payload);
-    });
+    return new Promise((resolve, reject) => {
+      rapid.call('SpotifyPublicAPI', 'searchTracks', {
+        'accessToken': 'BQAGInfGApcZg2eyv1kQ7KdeLb-RhlCUo-AiDB0luu_dKmrmBs6jDw4UeTGcqhFm9GGR_J9WgZl7Rho7mIQ9V5Bbdv_n3Mgl0rt_81IG7sQhJPrPl0KYSp0kR0oUwH0pcAIOencZyOFv3hycrqyho_FPM9WuU8Tz',
+        'query': searchTerm,
+        'limit': 1
+      }).on('success', function (payload) {
+         resolve(payload.tracks.items[0].id);
+      }).on('error', function (payload) {
+         console.error("Error occurred in search for song function");
+         console.log(payload);
+         reject(payload);
+      });
+    }).then((res) => {
+      this.getSong(res);
+    })
+
   }
 
+  getSong(id) {
+    return new Promise((resolve, reject) => {
+      rapid.call('SpotifyPublicAPI', 'getTrack', {
+	       'accessToken': 'BQAGInfGApcZg2eyv1kQ7KdeLb-RhlCUo-AiDB0luu_dKmrmBs6jDw4UeTGcqhFm9GGR_J9WgZl7Rho7mIQ9V5Bbdv_n3Mgl0rt_81IG7sQhJPrPl0KYSp0kR0oUwH0pcAIOencZyOFv3hycrqyho_FPM9WuU8Tz',
+	        'id': id
+        }).on('success', function (payload) {
+           resolve(payload);
+         }).on('error', function (payload) {
+	          console.log("error in function getSong");
+            reject(payload);
+          });
+        }).then((res) => {
+          console.log("look up song url now");
+          console.log(res.preview_url);
+        })
+      }
 
   render() {
     return (
