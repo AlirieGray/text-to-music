@@ -38,7 +38,7 @@ const TextIn = (props) => {
         <p>
           <input className="TextInput" id="textIn" type="text" placeholder="Enter some text..."/>
         </p>
-        <input className="SubmitButton" type="submit" value="Submit" />
+        <input className="btn" type="submit" value="Submit" />
       </form>
     </div>
   );
@@ -65,9 +65,12 @@ class App extends Component {
     this.setState({
       text: txt
     });
+    this.getSentiment(txt);
+    /*
     this.getToken().then((token) => {
-      this.analyzeTone(txt, token);
+      //this.analyzeTone(txt, token);
     });
+    */
   }
 
   getSentiment(text) {
@@ -124,6 +127,11 @@ class App extends Component {
   }
 
   searchForSong(searchTerm) {
+    fetch('/' + searchTerm).then(res => console.log(res));
+  }
+
+  /*
+  searchForSong(searchTerm) {
     return new Promise((resolve, reject) => {
       rapid.call('SpotifyPublicAPI', 'searchTracks', {
         'accessToken': 'BQAQCP2Edv163O6R-7Efe4ezNcQ3YYaKc5yjj4uRiIkkLbFH_yiO9NKwCP5B7A65bODtlkYZom14yxJJBGRVC0Vg0sF8nR8yhpefmnd-HripnBA8Psqn4Yrfig31gUKFhAccegNSCj6b',
@@ -140,6 +148,7 @@ class App extends Component {
       this.getSong(res);
     });
   }
+  */
 
   getSong(id) {
     console.log(id);
