@@ -87,7 +87,7 @@ class App extends Component {
         }
       })
     }).then((res) => {
-      console.log(res.body.result.sentiment);
+      //console.log(res.body.result.sentiment);
       this.searchForSong(res.body.result.sentiment)
       this.setState({
         mood: res.body.result.sentiment
@@ -127,7 +127,12 @@ class App extends Component {
   }
 
   searchForSong(searchTerm) {
-    fetch('/' + searchTerm).then(res => console.log(res));
+    fetch('http://localhost:3001/search').then((res) => {
+      console.log("fetched!");
+      console.log(res);
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   /*
