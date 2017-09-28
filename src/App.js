@@ -129,7 +129,9 @@ class App extends Component {
   searchForSong(searchTerm) {
     fetch('http://localhost:3001/search').then((res) => {
       console.log("fetched!");
-      console.log(res);
+      return res.text();
+    }).then((data) => {
+      console.log(data);
     }).catch((error) => {
       console.error(error);
     });

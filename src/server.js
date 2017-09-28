@@ -19,9 +19,7 @@ app.get('/search', function(req, res) {
       return console.log(error);
     }
     var id = result.tracks.items[0].id;
-    res.body = id;
-    console.log(res.body);
-    res.send();
+    res.send(id);
   })
 });
 
