@@ -22,10 +22,11 @@ app.post('/search', function(req, res) {
   console.log(req.body);
   spotify.search({ type: 'track', query: req.body.query, limit: 1 }, function(err, result) {
     if (err) {
-      return console.log(error);
+      return console.log(err);
     }
-    var id = result.tracks.items[0].id;
-    res.send(id);
+    var link = result.tracks.items[0].external_urls.spotify;
+    //var id = result.tracks.items[0].id;
+    res.send(link);
   })
 });
 

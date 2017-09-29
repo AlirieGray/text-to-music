@@ -8,42 +8,43 @@
   margin: auto;
 }
 
-.HeaderBox {
-  text-align: center;
-  font-size: 24px;
-  color: white;
-  background-color: orange;
-  border-radius: 10px;
-  padding: 10px;
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-
-.TextInput {
-  padding: 10px;
-  font-size: 18px;
-  width: calc(100% - 20px);
-}
-
 .ShowText {
   text-align: center;
   clear:both;
 }
 
+.HeaderBox {
+  text-align: center;
+  font-size: 32px;
+  color: white;
+  background-color: orange;
+  border-radius: 10px;
+  padding: 9px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.TextInput {
+  flex: 3;
+  padding: 10px;
+  border-radius: 10px;
+  border-width: thin;
+  outline: none;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 18px;
+  width: calc(100% - 20px);
+}
+
 .btn {
-  position: relative;
-
-  float:left;
-  display: block;
-  margin: 5px auto;
-  padding: 7px 7px 7px 7px;
-
-  overflow: hidden;
-
+  flex: 1;
+  padding: 7px;
+  font-size: 20px;
   border-width: 0;
   outline: none;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
 
   background-color: #2ecc71;
   color: #ecf0f1;
@@ -55,40 +56,6 @@
   background-color: #27ae60;
 }
 
-.btn > * {
-  position: relative;
-}
-
-.btn span {
-  display: block;
-  padding: 12px 24px;
-}
-
-.btn:before {
-  content: "";
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  display: block;
-  width: 0;
-  padding-top: 0;
-
-  border-radius: 100%;
-
-  background-color: rgba(236, 240, 241, .3);
-
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
 .btn:active:before {
-  width: 120%;
-  padding-top: 120%;
-
   transition: width .2s ease-out, padding-top .2s ease-out;
 }

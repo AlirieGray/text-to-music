@@ -110,6 +110,8 @@ class App extends Component {
       return res.text();
     }).then((data) => {
       console.log(data);
+      // redirect to song url
+      window.location = data;
     }).catch((error) => {
       console.error(error);
     });
@@ -137,18 +139,22 @@ const Box = (props) => {
 }
 
 const TextIn = (props) => {
+  const styles = {
+    flexContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+
+    }
+  }
+
   return(
-    <div>
-      <form onSubmit={ (event) => {
+      <form style={styles.flexContainer} onSubmit={ (event) => {
           event.preventDefault();
           props.handleSubmit(document.getElementById("textIn").value);
         }}>
-        <p>
-          <input className="TextInput" id="textIn" type="text" placeholder="Enter some text..."/>
-        </p>
+        <input className="TextInput" id="textIn" type="text" placeholder="Enter some text..."/>
         <input className="btn" type="submit" value="Submit" />
       </form>
-    </div>
   );
 }
 
@@ -159,5 +165,6 @@ const ShowText = (props) => {
     </div>
   );
 }
+
 
 export default App;
