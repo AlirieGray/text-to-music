@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var Spotify = require('node-spotify-api');
+var bodyParser = require('body-parser');
 var spotify = new Spotify({
   id: 'cc686d629de4459bb062466f86c049f9',
   secret: '0898470c4bc44c509bd963655a3526e4'
@@ -13,8 +14,13 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/search', function(req, res) {
-  spotify.search({ type: 'track', query: "ok", limit: 1 }, function(err, result) {
+app.use(bodyParser.json());
+
+// returns an id
+app.post('/search', function(req, res) {
+  console.log("posting!");
+  console.log(req.body);
+  spotify.search({ type: 'track', query: req.body.query, limit: 1 }, function(err, result) {
     if (err) {
       return console.log(error);
     }
