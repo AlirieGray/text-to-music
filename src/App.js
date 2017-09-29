@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import './Style.css';
 var unirest = require('unirest');
-var scopes = 'user-read-private user-read-email'
-var toneUsername = "f0cb679b-48fd-4be6-a5ba-e97784f7505d";
-var tonePassword = "EJKPkQjbPwQT";
-var toneURL = "https://gateway.watsonplatform.net/tone-analyzer/api";
-var ToneAnalyzer = require('watson-developer-cloud/tone-analyzer/v3');
-var tone_analyzer = new ToneAnalyzer({
-  username: toneUsername,
-  password: tonePassword,
-  version_date: '2016-05-19'
-});
+
+// stores the index of each emotion as it appears
+// in the object returned by the tone analyzer function
+var toneIndexes = {
+  anger: 0,
+  disgust: 1,
+  fear: 2,
+  joy: 3,
+  sadness: 4
+}
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +25,8 @@ class App extends Component {
     this.setState({
       text: txt
     });
-    this.getSentiment(txt);
+    //this.getSentiment(txt);
+    this.analyzeTone(txt);
     /*
     this.getToken().then((token) => {
       //this.analyzeTone(txt, token);
@@ -71,24 +72,28 @@ class App extends Component {
   /* takes in a body of text and returns a JSON object with
    * information about its tone (using the watson tone analyzer api) */
   analyzeTone(txt, token) {
-    var tone_analyzer = new ToneAnalyzer({
-      token: token,
-      version_date: '2016-05-19'
-    });
-    var params = {
-      text: txt,
-      tones: 'emotion'
-    };
-    return new Promise((resolve, reject) => {
-      tone_analyzer.tone(params, function(error, response) {
-        if (error) {
-          console.log('error: ', error);
-        } else {
-          return (JSON.stringify(response, null, 2));
-        }
+    fetch('http://localhost:3001/analyze', {
+      method: 'POST',
+      headers: {
+         'Accept': 'application/json, text/plain',
+         'Content-Type': 'application/json',
+       },
+      body: JSON.stringify({
+        text: txt
       })
     }).then((res) => {
-        console.log(res);
+      console.log("fetched!");
+      return res.json();
+    }).then((data) => {
+      //console.log(data);
+      var tones_array = data.document_tone.tone_categories[0].tones;
+      console.log("anger: " + tones_array[toneIndexes.anger].score)
+      console.log("joy: " + tones_array[toneIndexes.joy].score)
+      console.log("fear: " + tones_array[toneIndexes.fear].score)
+      console.log("disgust: " + tones_array[toneIndexes.disgust].score)
+      console.log("sadness: " + tones_array[toneIndexes.sadness].score)
+    }).catch((error) => {
+      console.error(error);
     });
   }
 

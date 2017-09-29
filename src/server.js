@@ -6,6 +6,15 @@ var spotify = new Spotify({
   id: 'cc686d629de4459bb062466f86c049f9',
   secret: '0898470c4bc44c509bd963655a3526e4'
 });
+var toneUsername = "f0cb679b-48fd-4be6-a5ba-e97784f7505d";
+var tonePassword = "EJKPkQjbPwQT";
+var toneURL = "https://gateway.watsonplatform.net/tone-analyzer/api";
+var ToneAnalyzer = require('watson-developer-cloud/tone-analyzer/v3');
+var tone_analyzer = new ToneAnalyzer({
+  username: toneUsername,
+  password: tonePassword,
+  version_date: '2016-05-19'
+});
 require('dotenv').config();
 
 app.use(function(req, res, next) {
@@ -16,7 +25,7 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json());
 
-// returns an id
+// returns a url
 app.post('/search', function(req, res) {
   console.log("posting!");
   console.log(req.body);
@@ -29,5 +38,24 @@ app.post('/search', function(req, res) {
     res.send(link);
   })
 });
+
+app.post('/analyze', function(req, res) {
+  console.log("analyzing!");
+  console.log(req.body);
+  var params = {
+    text: req.body.text,
+    tones: 'emotion'
+  };
+  tone_analyzer.tone(params, function(error, response) {
+    if (error) {
+      console.log(error);
+    } else {
+      var analysis = JSON.stringify(response, null, 2);
+      console.log(analysis);
+      res.send(analysis);
+    }
+  })
+
+})
 
 app.listen(3001);
