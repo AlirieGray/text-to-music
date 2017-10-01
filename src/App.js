@@ -12,6 +12,13 @@ var toneIndexes = {
   sadness: 4
 }
 
+// stores a collection of songs for each emotion recognized by the tone analyzer
+var happySongs = ["All Star", "I'm a Believer", "Sugar, Sugar", "Twist and Shout", "Margaritaville"];
+var sadSongs = ["I'm so lonesome I could cry", "Cry", "Jocelyn Flores", "Time Lapse", "Pain in my heart"];
+var fearfulSongs = ["Undercover of the night", "Morning dew", "White room", "Scary monsters", "The Fixer", "The Gates of Eden"];
+var angrySongs = ["Breaking the Law", "Get at me dog", "Violet", "Straight Outta Compton", "Head like a Hole", "Bombtrack"];
+var disgustedSongs = ["Revolution 9"];
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +29,7 @@ class App extends Component {
   }
 
   // when the user enters text, call a function to analyze the tone
-  // and search for a song based on the results 
+  // and search for a song based on the results
   enterText(txt) {
     this.setState({
       text: txt
@@ -61,6 +68,32 @@ class App extends Component {
       }, 0);
 
       console.log(maxEmotion.tone_name + " " + maxEmotion.score);
+      var maxEmotionName = maxEmotion.tone_name;
+      switch(maxEmotionName) {
+        case "Joy":
+          var i = Math.floor(Math.random() * happySongs.length);
+          this.searchForSong(happySongs[i]);
+          break;
+        case "Sadness":
+          var i = Math.floor(Math.random() * sadSongs.length);
+          this.searchForSong(sadSongs[i]);
+          break;
+        case "Fear":
+          var i = Math.floor(Math.random() * fearfulSongs.length);
+          this.searchForSong(fearfulSongs[i]);
+          break;
+        case "Disgust":
+          var i = Math.floor(Math.random() * disgustedSongs.length);
+          this.searchForSong(disgustedSongs[i]);
+          break;
+        case "Anger":
+          var i = Math.floor(Math.random() * angrySongs.length);
+          this.searchForSong(angrySongs[i]);
+          break;
+        default:
+          console.log("default!");
+          this.searchForSong("All Star");
+      }
 
      }).catch((error) => {
       console.error(error);
@@ -126,7 +159,7 @@ const TextIn = (props) => {
           event.preventDefault();
           props.handleSubmit(document.getElementById("textIn").value);
         }}>
-        <input className="TextInput" id="textIn" type="text" placeholder="Enter some text..."/>
+        <textarea className="TextInput" id="textIn" type="text" placeholder="Enter some text and get a song based on its mood!"/>
         <input className="btn" type="submit" value="Submit" />
       </form>
   );

@@ -29,6 +29,7 @@
   padding: 10px;
   border-radius: 10px;
   border-width: thin;
+  rows: 5;
   outline: none;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
