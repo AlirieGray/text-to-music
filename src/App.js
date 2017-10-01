@@ -21,52 +21,13 @@ class App extends Component {
     }
   }
 
+  // when the user enters text, call a function to analyze the tone
+  // and search for a song based on the results 
   enterText(txt) {
     this.setState({
       text: txt
     });
-    //this.getSentiment(txt);
     this.analyzeTone(txt);
-    /*
-    this.getToken().then((token) => {
-      //this.analyzeTone(txt, token);
-    });
-    */
-  }
-
-  /* takes in a body of text, analyses its tone, and sets the state
-   * of the app component to either positive, neutral, or negative
-   * based on the text (using the sentiment api)*/
-  getSentiment(text) {
-    return new Promise((resolve, reject) => {
-      unirest.post("https://community-sentiment.p.mashape.com/text/")
-      .header("X-Mashape-Key", "XmKB0iIDuwmshZEUmujdaIZklsogp134KaujsnvtdYu8vjdmZl")
-      .header("X-Mashape-Host", "community-sentiment.p.mashape.com")
-      .header("Content-Type", "application/x-www-form-urlencoded")
-      .send("txt=" + text)
-      .send("")
-      .end(function (result) {
-        if(result) {
-          resolve(result);
-        }
-      })
-    }).then((res) => {
-      //console.log(res.body.result.sentiment);
-      this.searchForSong(res.body.result.sentiment)
-      this.setState({
-        mood: res.body.result.sentiment
-      });
-    });
-  }
-
-  // gets an authentication token for the watson tone analyzer api
-  getToken() {
-    return fetch('/api/token/tone_analyzer').then((res) => {
-      console.log("does this log");
-      var text = res.text();
-      console.log(text);
-      return text;
-    });
   }
 
   /* takes in a body of text and returns a JSON object with
@@ -86,13 +47,22 @@ class App extends Component {
       return res.json();
     }).then((data) => {
       //console.log(data);
-      var tones_array = data.document_tone.tone_categories[0].tones;
-      console.log("anger: " + tones_array[toneIndexes.anger].score)
-      console.log("joy: " + tones_array[toneIndexes.joy].score)
-      console.log("fear: " + tones_array[toneIndexes.fear].score)
-      console.log("disgust: " + tones_array[toneIndexes.disgust].score)
-      console.log("sadness: " + tones_array[toneIndexes.sadness].score)
-    }).catch((error) => {
+      var categories = data.document_tone.tone_categories[0].tones;
+      console.log("anger: " + categories[toneIndexes.anger].score);
+      console.log("joy: " + categories[toneIndexes.joy].score);
+      console.log("fear: " + categories[toneIndexes.fear].score);
+      console.log("disgust: " + categories[toneIndexes.disgust].score);
+      console.log("sadness: " + categories[toneIndexes.sadness].score);
+
+      // find the most prominent emotion in the source text
+      // returns an object with the score, tone_id and tone_name
+      var maxEmotion = categories.reduce(function (left, right) {
+        return (left.score > right.score) ? left : right;
+      }, 0);
+
+      console.log(maxEmotion.tone_name + " " + maxEmotion.score);
+
+     }).catch((error) => {
       console.error(error);
     });
   }
@@ -148,7 +118,6 @@ const TextIn = (props) => {
     flexContainer: {
       display: 'flex',
       justifyContent: 'center',
-
     }
   }
 
