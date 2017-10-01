@@ -29,6 +29,7 @@
   padding: 10px;
   border-radius: 10px;
   border-width: thin;
+  margin-bottom: 50px;
   rows: 5;
   outline: none;
   border-top-right-radius: 0px;
@@ -43,6 +44,7 @@
   font-size: 20px;
   border-width: 0;
   outline: none;
+  margin-bottom: 50px;
   border-radius: 10px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;

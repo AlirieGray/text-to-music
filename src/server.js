@@ -33,6 +33,7 @@ app.post('/search', function(req, res) {
     if (err) {
       return console.log(err);
     }
+    //console.log(result.tracks.items[0]);
     var link = result.tracks.items[0].external_urls.spotify;
     //var id = result.tracks.items[0].id;
     res.send(link);

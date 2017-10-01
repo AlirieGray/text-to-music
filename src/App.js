@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Style.css';
+import SpotifyPlayer from 'react-spotify-player';
 var unirest = require('unirest');
 
 // stores the index of each emotion as it appears
@@ -24,7 +25,8 @@ class App extends Component {
     super(props);
     this.state = {
       text: "",
-      mood: ""
+      mood: "",
+      uri: "spotify:album:2kyTLcEZe6nc1s6ve0zW9P",
     }
   }
 
@@ -119,13 +121,20 @@ class App extends Component {
     }).then((data) => {
       console.log(data);
       // redirect to song url
-      window.location = data;
+      //window.location = data;
+      this.state.uri = data;
     }).catch((error) => {
       console.error(error);
     });
   }
 
   render() {
+    const size = {
+      width: '100%',
+      height: 300,
+    };
+    const view = 'list'; // or 'coverart'
+    const theme = 'black'; // or 'white'
     return (
       <div className="Container">
         <Box text="Text to Music"/>
@@ -133,6 +142,12 @@ class App extends Component {
           this.enterText(text);
         }}/>
         <ShowText showText={this.state.mood} />
+        <SpotifyPlayer
+          uri={this.state.uri}
+          size={size}
+          view={view}
+          theme={theme}
+        />
       </div>
     );
   }
